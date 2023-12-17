@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Customer - Apartment Reservation System</title>
+  <!-- Linking Bootstrap CSS File -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
+  <!-- Custom styles -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .customer-container {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 100px;
+    }
+  </style>
+</head>
+
+<body>
+<th:block th:include="adminNavBar"></th:block>
+<div class="container">
+  <h2 class="text-center mb-4">Customer Form</h2>
+  <form th:action="@{/saveCustomer}" th:object="${customer}" method="post" onsubmit="return validateForm()">
+    <div class="mb-3">
+      <label for="names" class="form-label">Full Name</label>
+      <input type="hidden" th:field="*{id}">
+      <input type="text" class="form-control" id="names" name="names" th:field="*{names}" required>
+    </div>
+    <div class="mb-3">
+      <label for="dob" class="form-label">Date of Birth</label>
+      <input type="date" class="form-control" id="dob" name="dob" th:value="*{dob}" th:field="*{dob}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Gender</label>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" id="male" name="gender" th:field="*{gender}" value="Male">
+        <label class="form-check-label" for="male">Male</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" id="female" name="gender" th:field="*{gender}" value="Female">
+        <label class="form-check-label" for="female">Female</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input type="text" class="form-control" id="address" name="address" th:field="*{address}" required>
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Phone Number</label>
+      <input type="tel" class="form-control" id="phone" name="phone" th:field="*{phone}" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" class="form-control" id="password" name="password" th:field="*{password}" required>
+    </div>
+
+    <!-- Add other fields as needed -->
+    <button type="submit" class="btn btn-primary">Save Customer Information</button>
+    <button type="reset" class="btn btn-danger">clear</button>
+  </form>
+
+
+</div>
+<script>
+  function validateForm() {
+    // Validate phone number
+    var phone = document.getElementById('phone').value;
+    if (!/^07\d{8}$/.test(phone)) {
+      alert('Phone number must start with 07 and be 10 digits');
+      return false;
+    }
+
+    // Validate date of birth
+    var dob = new Date(document.getElementById('dob').value);
+    var today = new Date();
+    var minDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    if (dob > minDob) {
+      alert('Date of birth must be at least 18 years ago');
+      return false;
+    }
+
+
+
+    return true;
+  }
+</script>
+<!-- Bootstrap script link -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
